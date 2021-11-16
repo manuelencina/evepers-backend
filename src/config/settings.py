@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'graphene_django',
     'accounts',
     'profiles',
     'gigs',
@@ -53,6 +54,10 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.AllowAllUsersModelBackend',
     'accounts.backends.CaseInsensitiveModelBackend',
 )
+
+GRAPHENE = {
+    'SCHEMA': 'config.schema.schema',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
