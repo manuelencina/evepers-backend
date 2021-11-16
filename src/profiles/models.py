@@ -22,3 +22,43 @@ class SellerProfile(models.Model):
 
     def __str__(self):
         return '%s' % (self.account.email)
+
+
+class SocialNetwork(models.Model):
+    name = models.CharField(max_length=100)
+    social_network_links = models.ManyToManyField(
+        SellerProfile,
+        blank=True,
+        through='SellerProfileSocialNetwork'
+    )
+
+    class Meta:
+        db_table = 'social_networks'
+        verbose_name = 'Social Network'
+        verbose_name_plural = 'Social Networks'
+
+    def __str__(self):
+        return self.name
+
+
+class SellerProfileSocialNetwork(models.Model):
+    link = models.TextField()
+    seller_profile = models.ForeignKey(
+        SellerProfile, on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+    social_network = models.ForeignKey(
+        SocialNetwork,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        db_table = 'seller_profiles_social_networks'
+        verbose_name = 'Seller_Profile_Social_Network'
+        verbose_name_plural = 'Seller_Profiles_Social_Networks'
+
+    def __str__(self):
+        return self.link
