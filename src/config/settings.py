@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'accounts',
     'profiles',
     'gigs',
@@ -53,10 +55,23 @@ AUTH_USER_MODEL = 'accounts.Account'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.AllowAllUsersModelBackend',
     'accounts.backends.CaseInsensitiveModelBackend',
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 GRAPHENE = {
     'SCHEMA': 'config.schema.schema',
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
+}
+
+GRAPHQL_JWT = {
+    'JWT_ALLOW_ARGUMENT': True,
+    'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
+    'JWT_EXPIRATION_DELTA': timedelta(days=7),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    'JWT_COOKIE_SAMESITE': None,
 }
 
 MIDDLEWARE = [
